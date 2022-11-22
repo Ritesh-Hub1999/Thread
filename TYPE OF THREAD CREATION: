@@ -1,0 +1,57 @@
+1. FUNCTION POINTER:
+   -------------
+#include <iostream>
+#include <thread>
+using namespace std;
+
+void func(){
+    cout<<"i'm in func"<<endl;
+}
+int main()
+{
+    thread t(func);
+    t.join();
+}
+
+2. lambda expression
+    ------------
+//here we are initializing a func
+  in variable
+  
+#include <iostream>
+#include <thread>
+using namespace std;
+
+
+int main()
+{
+    auto func=[](){
+    cout<<"i'm in func"<<endl;
+    };
+    
+    thread t(func);
+    t.join();
+}
+
+3. Function Object (Functor)
+    ----------
+here we have a class and we are
+overloading the operator.
+
+#include <iostream>
+#include <thread>
+using namespace std;
+
+class Base{
+public:
+    void operator()(){
+        cout<<"I'm in base class"<<endl;
+    }
+};
+int main()
+{
+    thread t((Base()));
+    t.join();
+}
+
+ 
