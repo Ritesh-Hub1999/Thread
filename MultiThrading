@@ -1,0 +1,17 @@
+what is multi threading?
+        -----------
+It is a program that contain two or
+more part that can run parallely.
+It's also known as multitasking.
+
+Why we need thread?
+      ----------
+Whenever a process has multitasking
+to perform independently than we 
+need thread.
+
+NOTE: If we create mutiplethreads 
+----- we don't know which one will
+gonna start first.
+
+
