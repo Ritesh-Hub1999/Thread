@@ -93,6 +93,9 @@ Time_Mutex:
 timed_mutex is blocked till timeout_time
 or the lock is acquired and returns true
 if success otherwise false.
+
+code:
+----
 #include <iostream>
 #include <thread>
 #include <mutex>
@@ -122,4 +125,51 @@ int main(){
    t2.join();
    
    cout<<counter;
+}
+
+Recursive Mutex
+---------------
+1. If thread T1 first call lock/try_lock on
+recursive mutex m1, then m1 is locked by 
+T1, now as T1 is running in recursion T1
+can call lock/try_lock any number of times
+there is no issue.
+
+2. But if T1 have acquired 10 times lock/try_lock
+on mutex m1 then thread T1 will have to unlock 
+it 10 times otherwise no other thread will be
+able to lock mutex m1.
+It means recursive_mutex keeps count how many
+times it was locked so that many times it should
+be unlocked.
+
+Code:
+----
+#include <iostream>
+#include <thread>
+#include <mutex>
+#include <chrono>
+using namespace std;
+
+int counter = 0;
+recursive_mutex m;
+
+void recursion(char ch, int n){
+    if(n < 0){
+        return;
+    }
+    m.lock();
+    cout<<"thread ID" << ch <<" "<<counter++<<endl;
+    recursion(ch,n-1);
+    m.unlock();
+    
+}
+
+int main(){
+   thread t1(recursion,'1',10);
+   thread t2(recursion,'2',10);
+   
+   t1.join();
+   t2.join();
+
 }
