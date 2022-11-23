@@ -1,0 +1,105 @@
+Lock Gaurd
+---------
+1. It acquires mutex lock the moment
+  you create the object of lock_guard.
+  
+2. It automatically removes the lock
+   while goes out of scope.
+   
+3. It is very light weight wrapper for
+    owning mutex on scoped basis.
+    
+Code:
+----
+#include <iostream>
+#include <thread>
+#include <mutex>
+#include <chrono>
+using namespace std;
+
+int counter = 0;
+mutex m;
+
+void func(int n){
+    lock_guard<mutex> lock(m);
+    for(int i=0;i<n;i++){
+        counter++;
+        cout<<counter<<endl;
+    }
+}
+
+int main(){
+   thread t1(func,10);
+   thread t2(func,10);
+   
+   t1.join();
+   t2.join();
+
+}
+
+Unique Lock:
+-----------
+1. The class unique_lock is a mutex ownership wrapper.
+2. It Allows:
+    a. Can Have Different Locking Strategies
+    b. time-constrained attempts at locking (try_lock_for, try_lock_until)
+    c. recursive locking
+    d. transfer of lock ownership (move not copy)
+    e. condition variables. (See this in coming videos)
+
+Locking Strategies
+   TYPE           EFFECTS(S)
+1. defer_lock  do not acquire ownership of the mutex.
+2. try_to_lock  try to acquire ownership of the mutex without blocking.
+3. adopt_lock  assume the calling thread already has ownership of the mutex.
+
+using locking strategy:
+----
+dose not call lock the mutex,because used differ lock
+than we have to explicitly tell to lock whenever we
+want to lock mutex.
+
+//unlock is not needed as it will be unlocked
+in destructor of unique lock
+Code:
+-----
+void func(int n){
+    unique_lock<mutex> lock(m);
+    for(int i=0;i<n;i++){
+        counter++;
+        cout<<counter<<endl;
+    }
+}
+
+int main(){
+   thread t1(func,10);
+   thread t2(func,10);
+   
+   t1.join();
+   t2.join();
+
+}
+
+code using locking strategy defer lock
+------------
+int counter = 0;
+mutex m;
+
+void func(int n){
+    unique_lock<mutex> lock(m,defer_lock); //dose not call lock the mutex,because used differ lock
+    lock.lock();//than we have to explicitly tell to lock whenever we want to lock mutex.
+    for(int i=0;i<n;i++){
+        counter++;
+        cout<<counter<<endl;
+    }
+    //unlock is not needed as it will be unlocked in destructor of unique lock
+}
+
+int main(){
+   thread t1(func,10);
+   thread t2(func,10);
+   
+   t1.join();
+   t2.join();
+
+}
