@@ -42,3 +42,84 @@ int main()
     cout<<data<<endl;
     
 }
+
+1.1-> try_lock() On Mutex 
+      ---------
+0. try_lock() Tries to lock the mutex. 
+   Returns immediately. On successful
+   lock acquisition returns true otherwise
+   returns false.
+   
+1. If try_lock() is not able to lock mutex,
+   then it doesn't get blocked that's why 
+   it is called non-blocking.
+   
+2. If try_lock is called again by the same
+   thread which owns the mutex, the behaviour
+   is undefined.It is a dead lock situation 
+   with undefined behaviour.
+   
+Code:
+----
+#include <iostream>
+#include <thread>
+#include <mutex>
+using namespace std;
+
+int counter = 0;
+mutex m;
+
+void increaseTheCounterBy100Time(){
+    for(int i=0;i<100;i++){
+        if(m.try_lock()){
+            ++counter;
+            m.unlock();
+        }
+    }
+}
+
+int main(){
+    thread t1(increaseTheCounterBy100Time);
+    thread t2(increaseTheCounterBy100Time);
+    
+    t1.join();
+    t2.join();
+    
+    cout<<counter;
+}
+
+Time_Mutex:
+----------
+timed_mutex is blocked till timeout_time
+or the lock is acquired and returns true
+if success otherwise false.
+#include <iostream>
+#include <thread>
+#include <mutex>
+#include <chrono>
+using namespace std;
+
+int counter = 0;
+timed_mutex m;
+
+void print(int i){
+    if(m.try_lock_for(chrono::seconds(1))){
+        counter++;
+        this_thread::sleep_for(chrono::seconds(2));
+        cout<<"THread " << i <<" Entered" <<endl;
+        m.unlock();
+    }
+    else{
+        cout<<"THread "<< i <<" couldn't enter"<<endl;
+    }
+}
+
+
+int main(){
+   thread t1(print,1);
+   thread t2(print,2);
+   t1.join();
+   t2.join();
+   
+   cout<<counter;
+}
