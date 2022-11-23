@@ -1,0 +1,44 @@
+1 Thread Or Process synchronize to
+  access critical section.
+  
+2 Critical section is one or collection
+  of program statements which should be
+  executed by only one thread or process
+  at a time.
+
+for this synchronization we need to use mutex
+class.
+
+if we don't use synchronize the process
+will excecute parallely so amount is global var
+and both the thread try to access it
+so this is the problem called race condition.
+So we need to use mutex for syncronisation
+
+code:
+-----
+#include <iostream>
+#include <thread>
+#include <mutex>
+using namespace std;
+
+
+int amount = 0;
+mutex m;
+
+void addMoney(int x){
+    m.lock();
+    amount += x;   //critical section
+    m.unlock();
+}
+
+int main()
+{
+    thread t1(addMoney,100);
+    thread t2(addMoney,300);
+    
+    t1.join();
+    t2.join();
+    
+    cout<< amount;
+}
