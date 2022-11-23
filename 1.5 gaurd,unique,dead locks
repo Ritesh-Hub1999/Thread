@@ -9,8 +9,43 @@ Lock Gaurd
 3. It is very light weight wrapper for
     owning mutex on scoped basis.
     
-Code:
+
+Unique Lock:
+-----------
+1. The class unique_lock is a mutex ownership wrapper.
+2. It Allows:
+    a. Can Have Different Locking Strategies
+    b. time-constrained attempts at locking (try_lock_for, try_lock_until)
+    c. recursive locking
+    d. transfer of lock ownership (move not copy)
+    e. condition variables. (See this in coming videos)
+
+Locking Strategies
+   TYPE           EFFECTS(S)
+1. defer_lock  do not acquire ownership of the mutex.
+2. try_to_lock  try to acquire ownership of the mutex without blocking.
+3. adopt_lock  assume the calling thread already has ownership of the mutex.
+
+using locking strategy:
 ----
+dose not call lock the mutex,because used differ lock
+than we have to explicitly tell to lock whenever we
+want to lock mutex.
+
+//unlock is not needed as it will be unlocked
+in destructor of unique lock
+
+Dead Lock:
+--------
+Deadlock is situation in an operating system
+where multiple processes residing in the 
+memory doesn't able to perform their execution
+because the resources which are needed for 
+program execution is being hold by another
+resource who is waiting for some other resource for completion
+    
+Lock Gaurd Code:
+------------
 #include <iostream>
 #include <thread>
 #include <mutex>
@@ -37,32 +72,9 @@ int main(){
 
 }
 
-Unique Lock:
------------
-1. The class unique_lock is a mutex ownership wrapper.
-2. It Allows:
-    a. Can Have Different Locking Strategies
-    b. time-constrained attempts at locking (try_lock_for, try_lock_until)
-    c. recursive locking
-    d. transfer of lock ownership (move not copy)
-    e. condition variables. (See this in coming videos)
 
-Locking Strategies
-   TYPE           EFFECTS(S)
-1. defer_lock  do not acquire ownership of the mutex.
-2. try_to_lock  try to acquire ownership of the mutex without blocking.
-3. adopt_lock  assume the calling thread already has ownership of the mutex.
-
-using locking strategy:
-----
-dose not call lock the mutex,because used differ lock
-than we have to explicitly tell to lock whenever we
-want to lock mutex.
-
-//unlock is not needed as it will be unlocked
-in destructor of unique lock
-Code:
------
+Unique Lock Code:
+-------------
 void func(int n){
     unique_lock<mutex> lock(m);
     for(int i=0;i<n;i++){
@@ -102,4 +114,46 @@ int main(){
    t1.join();
    t2.join();
 
+}
+
+Dead Lock Code:
+--------------
+#include <iostream>
+#include <thread>
+#include <mutex>
+using namespace std;
+
+mutex m1;
+mutex m2;
+
+void func1(){
+    m1.lock();
+    this_thread::sleep_for(chrono::seconds(1));
+    m2.lock();
+    
+    
+    cout<<"I'm in func1"<<endl;
+    
+    m1.unlock();
+    m2.unlock();
+}
+
+void func2(){
+    m2.lock();
+    this_thread::sleep_for(chrono::seconds(1));
+    m1.lock();
+    
+    cout<<"I'm in func2"<<endl;
+    
+    m2.unlock();
+    m1.unlock();
+}
+
+int main()
+{
+    thread t1(func1);
+    thread t2(func2);
+    
+    t1.join();
+    t2.join();
 }
