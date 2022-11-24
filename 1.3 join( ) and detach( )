@@ -26,6 +26,10 @@ DETACH NOTES:
    detach() will result into 
    program termination.
 
+o/p:- will be "main() function end" because
+      the os will take time to run the thread
+      and before that we are terminating
+      
 #include <iostream>
 #include <thread>
 using namespace std;
