@@ -50,11 +50,10 @@ in destructor of unique lock
 Dead Lock:
 --------
 Deadlock is situation in an operating system
-where multiple processes residing in the 
-memory doesn't able to perform their execution
-because the resources which are needed for 
+where the resources which are needed for 
 program execution is being hold by another
-resource who is waiting for some other resource for completion
+resource who is waiting for some other 
+resource for completion
     
 Lock Gaurd Code:
 ------------
