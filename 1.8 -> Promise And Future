@@ -1,1 +1,10 @@
 
+Notes: std::promise
+      --------------
+It is used to set values or exception
+
+Std:: future
+--------------
+used to get the values from promise
+Ask promise if the value is available
+Wait for the promise
