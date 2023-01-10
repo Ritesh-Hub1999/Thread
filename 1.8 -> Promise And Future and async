@@ -1,0 +1,56 @@
+Future:
+-----
+Future ek class ka template hai and jiska 
+object future value ko store kar sakta hai
+
+Future object aisi value store karta hai jo
+hum future mai assign karenga.
+
+and iss future value ko access karna ka lia 
+hama get() member function use karna hoga.
+
+Promise:
+-----
+it is a class template jo promise karta hai
+ki future mai koi value set karega.
+
+Har promise object ka sath ek future object
+asscosiated hota hai
+
+async:
+-----
+async internally ek thread run karta hai jisma
+function asynchronally run hota hai.
+
+but diffrence 
+
+yeah hai ki jo hamara thread tha wo koi object
+return nai karta but yeah async function future 
+type ka object return karta hai.
+
+syntax: future<int> fu = async(launc::async,func,func parameter);
+              |
+              |
+     async future type ka object
+     return kar rha hai
+     
+-> code using future and async:
+   ---------------------
+ #include <iostream>
+#include <thread>
+#include <future>
+using namespace std;
+int fact(int n){
+  int ans = 1;
+
+  for(int i=1;i<=n;i++){
+    ans = ans*i;
+  }
+
+  return ans;
+}
+int main() {
+  future<int> fu = async(launch::async,fact,5);
+  int ans = fu.get();
+  cout<<ans;
+}
