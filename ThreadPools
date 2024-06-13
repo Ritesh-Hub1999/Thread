@@ -1,0 +1,26 @@
+When interviewing candidates for positions that involve working with thread pools, you can ask a mix of conceptual, practical, and technical questions to assess their understanding and skills. Here are some key questions you might consider:
+
+### Conceptual Questions
+
+1. **What is a thread pool, and why is it used?**
+A thread pool is a collection of pre-initialized 
+threads that can be reused to perform multiple 
+tasks. It is used to manage a pool of worker
+ threads, improving performance and resource
+ utilization by reusing threads instead of 
+creating new ones for each task.
+
+2. Can you explain the lifecycle of a thread in a thread pool?**
+ The lifecycle includes thread creation, 
+execution, waiting for tasks, performing
+ tasks, and eventually termination 
+when the pool is shut down.
+
+3. **What are the advantages and disadvantages 
+of using thread pools?**
+ Advantages include reduced latency in task 
+execution, better resource management
+
+Disadvantages might include complexity in 
+implementation
+
