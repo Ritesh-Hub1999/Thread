@@ -1,5 +1,7 @@
 1)if we want to synchronize the thread in
 some point we use condition varaible.
+a) Notify other thread
+b) waiting for some conditions
 
 2)Condition variable are used for 2 
   purpose
